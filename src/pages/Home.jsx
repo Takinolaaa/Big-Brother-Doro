@@ -3,6 +3,7 @@ import Timer from "../components/Timer.jsx";
 import Eyeball from "../components/Eyeball.jsx";
 import Lefteye from "../components/Lefteye.jsx";
 import Navbar from "../components/NavBar.jsx";
+import Modal from "../components/Modal.jsx";
 
 function Home() {
   return (
@@ -16,7 +17,7 @@ function Home() {
           <Timer />
         </div>
         <div className="  rounded-2xl text-center text-3xl p-4  border-gray-300 ">
-          <Lefteye />
+          {/* <Lefteye /> */}
         </div>
       </div>
     </>

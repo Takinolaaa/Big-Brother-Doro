@@ -43,11 +43,12 @@ function Timer() {
     const interval = setInterval(() => {
       setTotalseconds((prev) => {
         if (prev <= 0) {
+          // the time has finished which means that rendering will stop
           clearInterval(interval);
           setIsRunning(false);
-          return 0;
+          return 0; //
         }
-        return prev - 1;
+        return prev - 1; // taking away one from the previous value every second
       });
     }, 1000);
 
@@ -114,7 +115,7 @@ function Timer() {
             min="0"
             max="60"
             onChange={(e) => setMins(e.target.value)}
-            placeholder="00"
+            value={mins.toString().padStart(2, "0")}
           />
 
           <label className="bold text-2xl">:</label>
@@ -124,8 +125,8 @@ function Timer() {
             type="number"
             min="0"
             max="59"
-            onChange={(e) => setsecs(e.target.value)}
-            placeholder="00"
+            onChange={(e) => setsecs(e.target.value.padStart(2, "0"))}
+            value={secs.toString().padStart(2, "0")}
           />
 
           <button

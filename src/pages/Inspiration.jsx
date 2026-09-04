@@ -1,3 +1,4 @@
+import Modal from "../components/Modal.jsx";
 import Navbar from "../components/NavBar.jsx";
 
 function Inspo() {
@@ -5,7 +6,7 @@ function Inspo() {
     <>
       <Navbar />
       <div>
-        <h1 className="text-center font-['Orbitron']">1984</h1>
+        <h1 className="text-center ">1984</h1>
       </div>
     </>
   );

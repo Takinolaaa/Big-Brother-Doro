@@ -3,7 +3,7 @@ import eye from "../assets/bbd.png";
 function NavBar() {
   return (
     <>
-      <div className="flex border-solid flex-row w-full gap-2 font-['Orbitron']  h-20 p-7 ">
+      <div className="flex border-solid flex-row w-full gap-2   h-20 p-7 ">
         <div className="flex flex-row">
           <a href="/">
             <h1 className="font-bold hover:text-red-500 hover:underline whitespace-nowrap">
