@@ -1,13 +1,9 @@
-import { useState, useEffect, useContext } from "react";
-
-import { MyContext } from "./Timer";
+import { useState, useEffect } from "react";
 
 function TabTracker() {
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
 
-  const isRunning = useContext(MyContext);
-
-  console.log(isRunning);
+  const [timestamp, setTimestamp] = useState("");
 
   useEffect(() => {
     function handleVisibilityChange() {
@@ -16,7 +12,7 @@ function TabTracker() {
       }
     }
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange); // every time the tab is changed it will be added up
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);

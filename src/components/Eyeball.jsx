@@ -1,6 +1,6 @@
 import eyeball from "../assets/eyeball.gif";
 
-function Eyeball() {
+function Eyeball({ activate }) {
   return (
     <>
       <figure className="w-96 h-72">

@@ -1,10 +1,9 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 
 import pause from "../assets/pause.png";
 import play from "../assets/play.png";
 import TabTracker from "./Tabtracker.jsx";
-
-export const MyContext = createContext(null);
+import Modal from "./Modal.jsx";
 
 function Timer() {
   const [totalSeconds, setTotalseconds] = useState(0);
@@ -12,6 +11,7 @@ function Timer() {
   const [mins, setMins] = useState(0);
   const [secs, setsecs] = useState(0);
   const value = parseInt(mins) * 60 + parseInt(secs);
+  const [visible, SetVisible] = useState(false);
 
   const handlethirty = () => {
     setTotalseconds(30 * 60);
@@ -39,19 +39,23 @@ function Timer() {
   };
   useEffect(() => {
     // Renders changes on the displayed time clock every second
-    if (!isRunning) return;
+    if (!isRunning) {
+      return;
+    }
     const interval = setInterval(() => {
       setTotalseconds((prev) => {
         if (prev <= 0) {
           // the time has finished which means that rendering will stop
           clearInterval(interval);
           setIsRunning(false);
+          SetVisible(true);
           return 0; //
         }
         return prev - 1; // taking away one from the previous value every second
       });
     }, 1000);
 
+    SetVisible(false);
     return () => clearInterval(interval); // stops it from rendering in the back
   }, [isRunning]);
 
@@ -59,94 +63,96 @@ function Timer() {
   const seconds = totalSeconds % 60; // takes the remainder
 
   return (
-    <div className="rounded-xl w-fit">
-      <div className="flex flex-col border-2 font-['Orbitron'] shadow-xl rounded-xl border-gray-300 p-4 mt-11  h-72 w-96">
-        <div className=" flex justify-center gap-1.5 mb-10">
-          <button
-            onClick={() => handlethirty()}
-            className=" bg-red-400 hover:bg-red-600 p-2 rounded-md"
-          >
-            30 mins
-          </button>
-          <button
-            onClick={() => handletwenty()}
-            className=" bg-red-400 hover:bg-red-600 p-2 rounded-md"
-          >
-            25 mins
-          </button>
-          <button
-            onClick={() => handlefifteen()}
-            className=" bg-red-400 hover:bg-red-600 p-2 rounded-md"
-          >
-            15 mins
-          </button>
+    <>
+      {visible && <Modal />}
+      <div className="rounded-xl w-fit">
+        <div className="flex flex-col border-2 font-['Orbitron'] shadow-xl rounded-xl border-gray-300 p-4 mt-11  h-72 w-96">
+          <div className=" flex justify-center gap-1.5 mb-10">
+            <button
+              onClick={() => handlethirty()}
+              className=" bg-linear-to-b from-red-400 via-red-500 to-red-700  hover:bg-none  hover:bg-red-700  p-2 rounded-md"
+            >
+              30 mins
+            </button>
+            <button
+              onClick={() => handletwenty()}
+              className="bg-linear-to-b from-red-400 via-red-500 to-red-700  hover:bg-none  hover:bg-red-700 p-2 rounded-md"
+            >
+              25 mins
+            </button>
+            <button
+              onClick={() => handlefifteen()}
+              className="bg-linear-to-b from-red-400 via-red-500 to-red-700  hover:bg-none  hover:bg-red-700 p-2 rounded-md"
+            >
+              15 mins
+            </button>
+          </div>
+          <div className=" rounded-2xl text-center text-3xl p-4  border-gray-300 ">
+            {" "}
+            {minutes}:{seconds.toString().padStart(2, "0")}
+          </div>
+
+          <div className=" flex text-white gap-2  justify-center p-2">
+            <button
+              onClick={() => setIsRunning(false)}
+              className="flex bg-linear-to-b from-gray-400 via-gray-500 to-gray-600 hover:bg-none hover:bg-gray-600  justify-center items-center p-1 w-20 rounded-md"
+            >
+              <img src={pause} />
+            </button>
+
+            <button
+              onClick={() => setIsRunning(true)}
+              className="flexflex bg-linear-to-b from-gray-400 via-gray-500 to-gray-600 hover:bg-none hover:bg-gray-600  justify-center items-center p-1 w-20 rounded-md"
+            >
+              <img src={play} />
+            </button>
+            <button
+              onClick={() => handlerestart()}
+              className="flex justify-center bg-linear-to-b from-gray-400 via-gray-500 to-gray-600 hover:bg-none hover:bg-gray-600 p-4 w-60 rounded-md"
+            >
+              Restart
+            </button>
+          </div>
+
+          <div className="flex  justify-center gap-1.5">
+            <input
+              className="border-2 w-15 p-1 rounded-md  border-gray-300"
+              type="number"
+              min="0"
+              max="60"
+              onChange={(e) => setMins(e.target.value)}
+              value={mins.toString().padStart(2, "0")}
+            />
+
+            <label className="bold text-2xl">:</label>
+
+            <input
+              className="border-2 w-15 p-1 rounded-md  border-gray-300"
+              type="number"
+              min="0"
+              max="59"
+              onChange={(e) => setsecs(e.target.value.padStart(2, "0"))}
+              value={secs.toString().padStart(2, "0")}
+            />
+
+            <button
+              onClick={() => handlecustom()}
+              className=" text-white flex bg-linear-to-b from-gray-500 via-gray-900 to-black hover:bg-none hover:bg-gray-900 p-2 rounded-md"
+            >
+              Set Timer
+            </button>
+          </div>
         </div>
-        <div className=" rounded-2xl text-center text-3xl p-4  border-gray-300 ">
-          {" "}
-          {minutes}:{seconds.toString().padStart(2, "0")}
+
+        <div className="  justify-center rounded-xl border-gray-300 p-4  h-60 w-96">
+          <h1 className="text-center  font-['Orbitron']">
+            "Productivity Is Peace"
+          </h1>
         </div>
 
-        <div className=" flex text-white gap-2  justify-center p-2">
-          <button
-            onClick={() => setIsRunning(false)}
-            className="flex bg-gray-600 justify-center items-center hover:bg-gray-500 p-1 w-20 rounded-md"
-          >
-            <img src={pause} />
-          </button>
-
-          <button
-            onClick={() => setIsRunning(true)}
-            className="flex bg-gray-600 justify-center items-center hover:bg-gray-500 p-1 w-20 rounded-md"
-          >
-            <img src={play} />
-          </button>
-          <button
-            onClick={() => handlerestart()}
-            className=" bg-gray-600 hover:bg-gray-500 p-2 w-60 rounded-md"
-          >
-            Restart
-          </button>
-        </div>
-
-        <div className="flex  justify-center gap-1.5">
-          <input
-            className="border-2 w-15 p-1 rounded-md  border-gray-300"
-            type="number"
-            min="0"
-            max="60"
-            onChange={(e) => setMins(e.target.value)}
-            value={mins.toString().padStart(2, "0")}
-          />
-
-          <label className="bold text-2xl">:</label>
-
-          <input
-            className="border-2 w-15 p-1 rounded-md  border-gray-300"
-            type="number"
-            min="0"
-            max="59"
-            onChange={(e) => setsecs(e.target.value.padStart(2, "0"))}
-            value={secs.toString().padStart(2, "0")}
-          />
-
-          <button
-            onClick={() => handlecustom()}
-            className=" text-white bg-black hover:bg-gray-800 p-2 rounded-md"
-          >
-            Set Timer
-          </button>
-        </div>
+        {isRunning && <TabTracker />}
       </div>
-
-      <div className="  justify-center rounded-xl border-gray-300 p-4  h-60 w-96">
-        <h1 className="text-center  font-['Orbitron']">
-          "Productivity Is Peace"
-        </h1>
-      </div>
-      <MyContext.Provider value={isRunning}>
-        <TabTracker />
-      </MyContext.Provider>
-    </div>
+    </>
   );
 }
 
